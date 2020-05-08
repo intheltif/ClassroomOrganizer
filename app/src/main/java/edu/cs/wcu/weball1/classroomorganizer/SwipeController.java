@@ -45,6 +45,7 @@ class SwipeController extends Callback {
     private ButtonState buttonShowedState = ButtonState.GONE;
 
     /** An instance of the button to be drawn on the screen when swiped left or right */
+    //TODO: check button class
     private RectF buttonInstance = null;
 
     /** The ViewHolder of the item being swiped in the RecyclerView */
@@ -64,6 +65,8 @@ class SwipeController extends Callback {
     /**
      * Determines what types of actions are supported. In our case, only left and right swipe is
      * being supported.
+     *
+     * TODO: Drag (could)
      *
      * @param recyclerView The RecyclerView the user is interacting with.
      * @param viewHolder The ViewHolder of the item in the RecyclerView that was swiped.

@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Classroom Organizer</string>
+
+    <string-array name="cs101">
+        <item>Phillip Thompson</item>
+        <item>David Mitchell</item>
+        <item>Roger Hall</item>
+        <item>John Mulaney</item>
+        <item>Lee Mack</item>
+        <item>Amy Jones</item>
+        <item>Rob Brydon</item>
+        <item>Bob Mortimer</item>
+        <item>Kim Kardashian</item>
+        <item>Post Malone</item>
+        <item>Al Coholic</item>
+        <item>Ozzy Osbourne</item>
+        <item>Keanu Reeves</item>
+        <item>Patton Oswalt</item>
+        <item>Issac Newton</item>
+        <item>Kylo Ren</item>
+        <item>Darth Vader</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

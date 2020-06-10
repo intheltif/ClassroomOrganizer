@@ -2,6 +2,7 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +23,7 @@ import java.util.List;
  * @author Evert Ball
  * @version 25 March 2020
  */
-public class AttendanceActivity extends AppCompatActivity /*implements AttendanceAdapter.onListSelectionInterface*/ {
+public class AttendanceActivity extends AppCompatActivity {
 
 
     /** The RecyclerView that displays the list of students */

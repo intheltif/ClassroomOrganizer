@@ -1,21 +1,20 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AbsentFragment#newInstance} factory method to
+ * Use the {@link TardyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AbsentFragment extends Fragment {
+public class TardyFragment extends Fragment {
 
-    public AbsentFragment() {
+    public TardyFragment() {
         // Required empty public constructor
     }
 
@@ -25,9 +24,8 @@ public class AbsentFragment extends Fragment {
      *
      * @return A new instance of fragment AbsentFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static AbsentFragment newInstance() {
-        AbsentFragment fragment = new AbsentFragment();
+    public static TardyFragment newInstance() {
+        TardyFragment fragment = new TardyFragment();
         return fragment;
     }
 
@@ -40,6 +38,6 @@ public class AbsentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_absent, container, false);
+        return inflater.inflate(R.layout.fragment_tardy, container, false);
     }
 }

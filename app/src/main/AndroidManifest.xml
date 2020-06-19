@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".TabbedAttendanceActivity"
+            android:label="@string/title_activity_tabbed_attendance"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".AttendanceActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

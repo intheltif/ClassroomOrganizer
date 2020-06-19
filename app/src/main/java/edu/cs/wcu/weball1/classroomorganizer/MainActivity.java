@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
      * the splash screen is displayed.
      */
     private void goToAttendanceActivity() {
-        Intent attendance = new Intent(this, AttendanceActivity.class);
+        Intent attendance = new Intent(this, TabbedAttendanceActivity.class);
         startActivity(attendance);
     }
 }

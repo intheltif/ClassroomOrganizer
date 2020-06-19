@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AbsentFragment">
+    tools:context=".PresentFragment">
+
     <TextView
         android:id="@+id/absent_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Absent"
+        android:text="Present"
         android:textSize="34sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_attendance"
         android:layout_width="match_parent"

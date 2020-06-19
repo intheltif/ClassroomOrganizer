@@ -2,7 +2,9 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +55,10 @@ public class AttendanceActivity extends AppCompatActivity {
     /** The current attendance screen we are on (absent, present, or tardy). */
     private String attendanceType;
 
+    FragmentManager fragMan;
+
+    Fragment absentFrag;
+
     /**
      * Runs at startup and is a part of the Android Activity Lifecycle.
      * @param savedInstanceState The previously saved state of the application.
@@ -78,6 +84,13 @@ public class AttendanceActivity extends AppCompatActivity {
             String[] nameArr = stdList[i].split(" ");
             course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));
         }
+
+        // Set up absent fragment
+        fragMan = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragMan.beginTransaction();
+        absentFrag = new AbsentFragment();
+        fragmentTransaction.replace(android.R.id.content, absentFrag);
+        fragmentTransaction.commit();
 
         // Setting up the components for the RecyclerView to display the list correctly
         students = course.getList(attendanceType);

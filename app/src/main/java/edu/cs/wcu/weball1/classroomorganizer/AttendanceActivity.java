@@ -18,6 +18,12 @@ import android.widget.Toast;
 import java.util.List;
 
 /**
+ * ############################################################
+ * ##                                                        ##
+ * ##   WARNING: This class is NOT currently being used!!!   ##
+ * ##                                                        ##
+ * ############################################################
+ *
  * Displays the lists of students currently enrolled in the course. Allows the instructor to take
  * attendance for the class and click the buttons at the bottom of the screen to see the list of
  * students that are absent, present, and tardy.
@@ -84,13 +90,6 @@ public class AttendanceActivity extends AppCompatActivity {
             String[] nameArr = stdList[i].split(" ");
             course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));
         }
-
-        // Set up absent fragment
-        fragMan = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragMan.beginTransaction();
-        absentFrag = new AbsentFragment();
-        fragmentTransaction.replace(android.R.id.content, absentFrag);
-        fragmentTransaction.commit();
 
         // Setting up the components for the RecyclerView to display the list correctly
         students = course.getList(attendanceType);

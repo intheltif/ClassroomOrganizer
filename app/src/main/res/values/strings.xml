@@ -20,4 +20,6 @@
         <item>Kylo Ren</item>
         <item>Darth Vader</item>
     </string-array>
+
+    <string name="title_activity_tabbed_attendance">Attendance Activity</string>
 </resources>

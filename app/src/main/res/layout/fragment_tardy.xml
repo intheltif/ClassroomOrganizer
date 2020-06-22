@@ -14,7 +14,7 @@
         android:textSize="34sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_attendance"
+        android:id="@+id/rv_tardy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/absent_title"/>

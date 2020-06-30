@@ -6,7 +6,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -90,7 +90,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         }
 
         // Set up model to load shared persistent data
-        model = ViewModelProviders.of(this).get(SharedViewModel.class);
+        model = new ViewModelProvider(this).get(SharedViewModel.class);
         model.setAbsentList(course.getList("absent"));
         model.setPresentList(course.getList("present"));
         model.setTardyList(course.getList("tardy"));

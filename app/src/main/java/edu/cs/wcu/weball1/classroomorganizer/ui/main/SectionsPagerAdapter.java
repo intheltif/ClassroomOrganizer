@@ -46,7 +46,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         mPageReferenceMap = new HashMap<>();
     }
 
-    @Override
+    @Override @NonNull
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);
         mPageReferenceMap.put(position, fragment);
@@ -68,7 +68,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
      *
      * @return A fragment that corresponds to the selected tab position.
      */
-    @Override
+    @Override @NonNull
     public Fragment getItem(int position) {
         Fragment fragment = AbsentFragment.newInstance();
         switch (position) {

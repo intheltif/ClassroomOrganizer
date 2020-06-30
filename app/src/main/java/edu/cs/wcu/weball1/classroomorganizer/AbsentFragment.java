@@ -42,7 +42,6 @@ public class AbsentFragment extends Fragment {
      *
      * @return A new instance of fragment AbsentFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AbsentFragment newInstance() {
         AbsentFragment fragment = new AbsentFragment();
         return fragment;
@@ -62,7 +61,8 @@ public class AbsentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        RelativeLayout rl = (RelativeLayout) inflater.inflate(R.layout.fragment_absent, container, false);
+        RelativeLayout rl = (RelativeLayout)inflater.inflate(R.layout.fragment_absent,
+                container, false);
         RecyclerView recView = rl.findViewById(R.id.rv_absent);
         setUpRecyclerView(recView);
 

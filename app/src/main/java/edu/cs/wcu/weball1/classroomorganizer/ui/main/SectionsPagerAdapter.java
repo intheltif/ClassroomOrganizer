@@ -1,12 +1,12 @@
 package edu.cs.wcu.weball1.classroomorganizer.ui.main;
 
 import android.content.Context;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.HashMap;
 
@@ -20,12 +20,13 @@ import edu.cs.wcu.weball1.classroomorganizer.TardyFragment;
  *
  * TODO: Convert to FragmentStateAdapter using ViewPager2 class
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class SectionsPagerAdapter extends FragmentStateAdapter {
 
     /** Constants to represent the index of each of the tabs */
     private static final int PRESENT_INDEX = 0;
     private static final int ABSENT_INDEX = 1;
     private static final int TARDY_INDEX = 2;
+    private static final int NUM_PAGES = 3;
 
     /** The application context */
     private final Context mContext;
@@ -39,28 +40,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
      *
      * @param context The application context obtained from the host activity.
      * @param fm The FragmentManager obtained from the host activity.
+     * @param lifecycle The Lifcycle object obtained from the host activity.
      */
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
-        super(fm);
+    public SectionsPagerAdapter(Context context, FragmentManager fm, Lifecycle lifecycle) {
+        super(fm, lifecycle);
         mContext = context;
         mPageReferenceMap = new HashMap<>();
-    }
-
-    @Override @NonNull
-    public Object instantiateItem(ViewGroup container, int position) {
-        Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        mPageReferenceMap.put(position, fragment);
-        return fragment;
-    } // end instantiateItem method
-
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        super.destroyItem(container, position, object);
-        mPageReferenceMap.remove(position);
-    } // end destroyItem method
-
-    public Fragment getFragment(int key) {
-        return mPageReferenceMap.get(key);
     }
 
     /**
@@ -69,7 +54,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
      * @return A fragment that corresponds to the selected tab position.
      */
     @Override @NonNull
-    public Fragment getItem(int position) {
+    public Fragment createFragment(int position) {
         Fragment fragment = AbsentFragment.newInstance();
         switch (position) {
             case PRESENT_INDEX:
@@ -91,34 +76,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
      * @return The number of tabs to be shown.
      */
     @Override
-    public int getCount() {
+    public int getItemCount() {
         // Show 3 total pages.
-        return 3;
+        return NUM_PAGES;
     } // end getCount method
-
-    /**
-     * Returns the title of the tab given its position in the TabLayout.
-     *
-     * @param position The numerical position in the TabLayout indexed from 0.
-     * @return The tab title as a CharSequence.
-     */
-    @Override
-    public CharSequence getPageTitle(int position) {
-        CharSequence title = "";
-        switch (position) {
-            case 0:
-                title = "Present";
-                break;
-            case 1:
-                title = "Absent";
-                break;
-            case 2:
-                title = "Tardy";
-                break;
-            default:
-                title = "Unknown";
-        } // end switch
-        return title;
-    } // end getPageTitle method
 
 }

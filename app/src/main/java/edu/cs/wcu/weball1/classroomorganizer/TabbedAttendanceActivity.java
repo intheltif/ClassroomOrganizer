@@ -5,12 +5,16 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +34,13 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     private Course course;
     SharedViewModel model;
 
+    /**
+     * Called when the activity is starting. This is where most initialization goes.
+     *
+     * @param savedInstanceState If the activity is being reinitialized after previously being shut
+     *                           down then this Bundle contains the data it most recently supplied
+     *                           in onSaveInstanceState(Bundle), otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +48,36 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
 
 
         // Set up viewpager, adapter, and tab layout
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        // TODO: Convert to ViewPager2
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,
+                getSupportFragmentManager(), getLifecycle());
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+
+        // Get page titles through mediator
+        new TabLayoutMediator(tabs, viewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        switch (position) {
+                            case PRESENT_TAB_INDEX:
+                                tab.setText("Present");
+                                break;
+                            case ABSENT_TAB_INDEX:
+                                tab.setText("Absent");
+                                break;
+                            case TARDY_TAB_INDEX:
+                                tab.setText("Tardy");
+                                break;
+                            default:
+                                tab.setText("Unknown");
+                        } // end switch
+                    } // end onConfigureTab method
+                } // end anonymous class
+        ).attach();
+
+        // Disable paging between tabs in ViewPager2 to allow RecyclerView to handle touch events
+        viewPager.setUserInputEnabled(false);
 
         // Ensure absent tab is selected at startup
         tabs.selectTab(tabs.getTabAt(ABSENT_TAB_INDEX));

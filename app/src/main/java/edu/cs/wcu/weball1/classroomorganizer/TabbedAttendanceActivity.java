@@ -2,26 +2,14 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
-import java.util.List;
 
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
 
@@ -31,7 +19,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     private static final int ABSENT_TAB_INDEX = 1;
     private static final int TARDY_TAB_INDEX = 2;
 
-    private Course course;
     SharedViewModel model;
 
     /**
@@ -96,7 +83,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
 
         // Creating the list of students from an XML string-array
         String[] stdList = this.getResources().getStringArray(R.array.cs101);
-        this.course = new Course();
+        Course course = new Course();
         for(int i = 0; i < stdList.length; i++) {
             String[] nameArr = stdList[i].split(" ");
             course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));

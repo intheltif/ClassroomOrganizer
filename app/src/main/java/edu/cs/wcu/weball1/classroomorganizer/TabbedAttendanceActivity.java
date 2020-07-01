@@ -33,15 +33,16 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_attendance);
 
-
-        // Set up viewpager, adapter, and tab layout
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,
-                getSupportFragmentManager(), getLifecycle());
+        // Get references to ViewPager2 and TabLayout elements
         ViewPager2 viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
 
-        // Get page titles through mediator
+        // Create ViewPager2's adapter and connect it to the ViewPager2
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,
+                getSupportFragmentManager(), getLifecycle());
+        viewPager.setAdapter(sectionsPagerAdapter);
+
+        // Request page titles through mediator
         new TabLayoutMediator(tabs, viewPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
@@ -65,9 +66,12 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
 
         // Disable paging between tabs in ViewPager2 to allow RecyclerView to handle touch events
         viewPager.setUserInputEnabled(false);
-
         // Ensure absent tab is selected at startup
         tabs.selectTab(tabs.getTabAt(ABSENT_TAB_INDEX));
+        // Create course with a list of students.
+        Course course = setUpCourse();
+        // Set up model to load shared persistent data
+        updateSharedPersistentDataForCourse(course);
 
         // TODO: Make fab add a student.
         /*
@@ -81,6 +85,15 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         });
          */
 
+    } // end onCreate method
+
+    /**
+     * Create the course from the XML string-array resource in Strings.xml
+     *
+     * @return The course that was created from the string-array of student names.
+     */
+    private Course setUpCourse() {
+
         // Creating the list of students from an XML string-array
         String[] stdList = this.getResources().getStringArray(R.array.cs101);
         Course course = new Course();
@@ -88,15 +101,20 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
             String[] nameArr = stdList[i].split(" ");
             course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));
         }
+        return course;
+    } // end setUpCourse method
 
-        // Set up model to load shared persistent data
+    /**
+     * Creates a new ViewModelProvider that shares persistent data between fragments.
+     * @param course The course we are currently in.
+     */
+    private void updateSharedPersistentDataForCourse(Course course) {
+        // Load shared persistent data
         model = new ViewModelProvider(this).get(SharedViewModel.class);
         model.setAbsentList(course.getList("absent"));
         model.setPresentList(course.getList("present"));
         model.setTardyList(course.getList("tardy"));
         model.setCourse(course);
+    }
 
-
-    } // end onCreate method
-
-} // end class
+} // end TabbedAttendanceActivity class

@@ -1,5 +1,6 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,17 @@ public class AttendanceAdapter
         AttendanceViewHolder avh = new AttendanceViewHolder(l, img, first, last);
         return avh;
     } // end onCreateViewHolder method
+
+    public void removeAt(int position) {
+        //roster.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, roster.size());
+    }
+
+    public void updateList(List<Student> list) {
+        roster = list;
+        notifyDataSetChanged();
+    }
 
 
     /**

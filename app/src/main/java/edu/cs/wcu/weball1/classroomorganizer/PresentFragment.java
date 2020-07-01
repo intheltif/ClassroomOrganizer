@@ -2,6 +2,7 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +49,7 @@ public class PresentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        model = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
+        model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         studentList = model.getPresentList();
         course = model.getCourse();
     }
@@ -67,19 +68,13 @@ public class PresentFragment extends Fragment {
             @Override
             public void onRightClicked(int position) {
                 Student student = studentList.get(position);
-                course.mark(student, "tardy");
-                Toast.makeText(getContext(),
-                        student.getFullName() + " Marked Tardy...",
-                        Toast.LENGTH_SHORT).show();
+                refreshData(position, "tardy", student);
             } // end onRightClicked method
 
             @Override
             public void onLeftClicked(int position) {
                 Student student = studentList.get(position);
-                course.mark(student, "absent");
-                Toast.makeText(getContext(),
-                        student.getFullName() + " Marked Absent...",
-                        Toast.LENGTH_SHORT).show();
+                refreshData(position, "absent", student);
             } // end onLeftClicked method
         }; // end concrete implementation of abstract class
 
@@ -97,6 +92,15 @@ public class PresentFragment extends Fragment {
         });
 
         return recView;
+    }
+
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.updateList(model.getPresentList());
     }
 
     /**
@@ -119,9 +123,11 @@ public class PresentFragment extends Fragment {
     } // end setUpRecyclerView method
 
     /**
-     * Notifies the adapter that the data set has changed.
+     * Notifies the adapter that the data set has changed and removes the item.
      */
-    public void refreshData() {
+    public void refreshData(int position, String destination, Student student) {
+        model.appendToList(student, "present", destination);
+        adapter.removeAt(position);
         adapter.notifyDataSetChanged();
     }
 }

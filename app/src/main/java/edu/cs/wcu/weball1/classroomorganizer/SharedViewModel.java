@@ -1,5 +1,7 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -89,6 +91,42 @@ public class SharedViewModel extends ViewModel {
      */
     public List<Student> getTardyList() {
         return tardyList;
+    }
+
+    /**
+     * Moves an item from one list to another.
+     *
+     * @param student The student that is being moved.
+     * @param source The String representation list that the student is being removed from.
+     * @param destination The String representation of the list the student is being moved to.
+     */
+    public void appendToList(Student student, String source, String destination) {
+        switch (destination.toLowerCase()) {
+            case "present":
+                if (source.toLowerCase().equals("absent")) {
+                    absentList.remove(student);
+                } else if(source.toLowerCase().equals("tardy")) {
+                    tardyList.remove(student);
+                }
+                presentList.add(student);
+                break;
+            case "absent":
+                if (source.toLowerCase().equals("present")) {
+                    presentList.remove(student);
+                } else if(source.toLowerCase().equals("tardy")) {
+                    tardyList.remove(student);
+                }
+                absentList.add(student);
+                break;
+            case "tardy":
+                if (source.toLowerCase().equals("absent")) {
+                    absentList.remove(student);
+                } else if(source.toLowerCase().equals("present")) {
+                    presentList.remove(student);
+                }
+                tardyList.add(student);
+                break;
+        }
     }
 
 } // end SharedViewModel class

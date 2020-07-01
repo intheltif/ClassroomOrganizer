@@ -2,9 +2,11 @@
 
 ## Description
 
-Author: Evert Ball
-Capstone Advisor: Dr. William Kreahling
-Created: January 2020
+**Author: Evert Ball**
+
+**Capstone Advisor: Dr. William Kreahling**
+
+**Created: January 2020**
 
 An Android application that assists instructors in optimizing
 administrative tasks within the classroom. Some features include:
@@ -17,9 +19,9 @@ administrative tasks within the classroom. Some features include:
 * Student question randomizer,
 * Plugins for more features.
     
-***NOTE***: This app is still in its infancy. Therefore, attendance is the only
+*__NOTE:__ This app is still in its infancy. Therefore, attendance is the only
 feature that works. As time progresses, many features will start to come
-together into the final product.
+together into the final product.*
     
 
 ## How to Run

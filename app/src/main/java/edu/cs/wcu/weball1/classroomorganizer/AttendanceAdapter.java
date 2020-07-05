@@ -1,16 +1,34 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionManager;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
+import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * An adapter class that provides the functionality for the AttendanceActivity RecyclerView
@@ -22,8 +40,13 @@ import java.util.List;
 public class AttendanceAdapter
         extends RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder> {
 
+    private static final int PICK_IMAGE = 100;
+
     /** The roster of students to display on the screen. */
     public List<Student> roster;
+    RecyclerView recyclerView;
+    Context mContext;
+    Dialog dialog;
 
     /**
      * The constructor for this adapter.
@@ -49,16 +72,74 @@ public class AttendanceAdapter
      *               at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
-    public void onBindViewHolder(AttendanceViewHolder holder, int position) {
+    public void onBindViewHolder(final AttendanceViewHolder holder, final int position) {
 
-        Student student = roster.get(position);
+        final Student student = roster.get(position);
         //TODO: Implement photos for each student.
         //holder.studentPhoto.setImageDrawable(student.getPhoto());
         holder.firstName.setText(student.getFirstName());
         holder.lastName.setText(student.getSurname());
         holder.root.setTag(student);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "on click", Toast.LENGTH_LONG).show();
+                dialog = new Dialog(mContext);
+                dialog.setContentView(R.layout.dialog_edit_student);
+                dialog.setTitle("Edit Student Details");
 
+                final EditText first_editText = dialog.findViewById(R.id.et_edit_first_name);
+                first_editText.setText(student.getFirstName());
+
+                final EditText last_editText = dialog.findViewById(R.id.et_edit_last_name);
+                last_editText.setText(student.getSurname());
+
+                final ImageView stdImg = dialog.findViewById(R.id.iv_edit_photo);
+
+                stdImg.setOnClickListener(new View.OnClickListener() {
+                    /**
+                     * Called when a view has been clicked.
+                     *
+                     * @param v The view that was clicked.
+                     */
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                        ((Activity)mContext).startActivityForResult(intent, PICK_IMAGE);
+                    }
+                });
+
+                dialog.show();
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        student.setFullName(first_editText.getText().toString(), last_editText.getText().toString());
+                        recyclerView.getAdapter().notifyItemChanged(position);
+                    }
+                }); // end cancel listener
+
+            } // end onClick
+        }); //end onClick Listener
     } // end onBindViewHolder method
+
+    /**
+     * Called by RecyclerView when it starts observing this Adapter.
+     * <p>
+     * Keep in mind that same adapter may be observed by multiple RecyclerViews.
+     *
+     * @param recyclerView The RecyclerView instance which started observing this adapter.
+     * @see #onDetachedFromRecyclerView(RecyclerView)
+     */
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
 
     /**
      * Called when RecyclerView needs a new ViewHolder to represent an item. This new ViewHolder
@@ -72,6 +153,8 @@ public class AttendanceAdapter
     public AttendanceAdapter.AttendanceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout l = (LinearLayout) LayoutInflater.from(parent.getContext())
             .inflate(R.layout.student_card, parent, false);
+
+        mContext = parent.getContext();
 
         ImageView img = l.findViewById(R.id.iv_student_photo);
         TextView first = l.findViewById(R.id.tv_first_name);
@@ -91,6 +174,8 @@ public class AttendanceAdapter
         roster = list;
         notifyDataSetChanged();
     }
+
+
 
 
     /**

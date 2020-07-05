@@ -4,7 +4,8 @@
     android:orientation="horizontal"
     android:weightSum="10"
     android:layout_width="match_parent"
-    android:layout_height="75dp">
+    android:layout_height="75dp"
+    >
 
     <ImageView
         android:id="@+id/iv_student_photo"
@@ -13,19 +14,17 @@
         android:layout_weight="2"
         app:srcCompat="@drawable/student_icon" />
 
-
-
     <TextView
         android:id="@+id/tv_last_name"
         android:gravity="center_vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="4" />
 
     <TextView
         android:id="@+id/tv_first_name"
         android:gravity="center_vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="4" />
 

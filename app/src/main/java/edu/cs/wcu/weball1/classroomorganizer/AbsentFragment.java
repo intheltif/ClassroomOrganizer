@@ -1,24 +1,34 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,10 +37,13 @@ import java.util.List;
  */
 public class AbsentFragment extends Fragment {
 
+    private static final int PICK_IMAGE = 100;
+
     private AttendanceAdapter adapter;
     private SharedViewModel model;
     private List<Student> studentList;
     private Course course;
+    ImageView img;
 
     public AbsentFragment() {
         // Required empty public constructor
@@ -53,7 +66,7 @@ public class AbsentFragment extends Fragment {
         model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         studentList = model.getAbsentList();
         course = model.getCourse();
-
+        img = getActivity().findViewById(R.id.iv_edit_photo);
 
     }
 

@@ -94,7 +94,19 @@ public class Student {
         return this.firstName + " " + this.surname;
 
     } // end getFullName method
-    
+
+    /**
+     * Sets the first and last name of this student.
+     *
+     * @param first The first name of the student.
+     * @param last The surname of the student.
+     */
+    public void setFullName(String first, String last) {
+        //TODO Check for null-ness
+        this.firstName = first;
+        this.surname = last;
+    }
+
     /** 
      * Returns the ID of the student.
      *
@@ -116,6 +128,14 @@ public class Student {
         return this.photo;
 
     } // end getPhoto method
+
+    /**
+     * Sets the image of the student.
+     * @param photo The picture of the student
+     */
+    public void setPhoto(Drawable photo) {
+        this.photo = photo;
+    }
 
     /**
      * Returns whether the student was absent, present, or tardy.

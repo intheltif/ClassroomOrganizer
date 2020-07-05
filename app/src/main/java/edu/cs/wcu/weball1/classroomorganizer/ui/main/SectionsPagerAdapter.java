@@ -81,4 +81,8 @@ public class SectionsPagerAdapter extends FragmentStateAdapter {
         return NUM_PAGES;
     } // end getCount method
 
+    public Fragment getFragment(int index) {
+        return mPageReferenceMap.get(index);
+    }
+
 }

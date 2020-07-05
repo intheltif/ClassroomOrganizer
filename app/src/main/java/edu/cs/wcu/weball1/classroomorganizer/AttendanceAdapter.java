@@ -1,15 +1,11 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.TransitionManager;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
-import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * An adapter class that provides the functionality for the AttendanceActivity RecyclerView
@@ -40,12 +31,16 @@ import static android.app.Activity.RESULT_CANCELED;
 public class AttendanceAdapter
         extends RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder> {
 
+    /** The request code used by startActivityForResult */
     private static final int PICK_IMAGE = 100;
 
     /** The roster of students to display on the screen. */
     public List<Student> roster;
+    /** A reference to the attached RecyclerView. */
     RecyclerView recyclerView;
+    /** The current application context */
     Context mContext;
+    /** The dialog for editing students. */
     Dialog dialog;
 
     /**
@@ -164,12 +159,23 @@ public class AttendanceAdapter
         return avh;
     } // end onCreateViewHolder method
 
+    /**
+     * Removes the student at the specified position and notifies any observers that the data set
+     * has changed.
+     *
+     * @param position The student's position in the list we are removing them from.
+     */
     public void removeAt(int position) {
         //roster.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, roster.size());
     }
 
+    /**
+     * Updates the list of students once data has changed.
+     *
+     * @param list The new list of students.
+     */
     public void updateList(List<Student> list) {
         roster = list;
         notifyDataSetChanged();

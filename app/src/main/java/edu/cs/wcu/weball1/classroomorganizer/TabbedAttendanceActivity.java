@@ -1,35 +1,31 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Objects;
-
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
 
+/**
+ * The activity that allows a user to take attendance.
+ * This activity sets up the ViewPager and connects it to the TabLayout to display each of the
+ * three attendance types as Fragments that will interact with each other to share student
+ * attendance data.
+ *
+ * @author Evert Ball
+ * @version 07/06/2020
+ *
+ */
 public class TabbedAttendanceActivity extends AppCompatActivity {
 
+    /** Constants that represent the index of each of the three attendance tabs */
     private static final int PRESENT_TAB_INDEX = 0;
     private static final int ABSENT_TAB_INDEX = 1;
     private static final int TARDY_TAB_INDEX = 2;
@@ -37,10 +33,19 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     /** The request code used by startActivityForResult for the gallery image */
     private static final int PICK_IMAGE = 100;
 
+    /** The data model that allows us to pass data between the different tabs */
     SharedViewModel model;
+
+    /** The ViewPager that assists us in setting up the tab layout */
     ViewPager2 viewPager;
+
+    /** The TabLayout that displays each fragment */
     TabLayout tabs;
+
+    /** The ViewPager's adapter that is required by the ViewPager */
     SectionsPagerAdapter sectionsPagerAdapter;
+
+    /** The ImageView for the students photo */
     ImageView img;
 
     /**

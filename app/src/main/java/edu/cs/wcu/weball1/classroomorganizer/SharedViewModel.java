@@ -1,7 +1,5 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
-import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -9,9 +7,7 @@ import java.util.List;
 
 /**
  * A Model class that allows us to pass data between UI objects. A quick and dirty way to implement
- * MVVM architechture. This class essentially acts as a "delivery man" of objects.
- *
- * TODO Clean it up and make it actually fit the MVVM model.
+ * MVVM architecture. This class essentially acts as a "delivery man" of objects.
  *
  * @author Evert Ball
  * @version 22 June 2020

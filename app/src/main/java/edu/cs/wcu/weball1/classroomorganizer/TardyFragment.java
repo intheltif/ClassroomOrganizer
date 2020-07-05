@@ -1,13 +1,12 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,17 +18,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TardyFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * The Fragment that displays the list of tardy students in the TabLayout.
+ *
+ * @author Evert Ball
+ * @version 07/06/2020
+ *
  */
 public class TardyFragment extends Fragment {
 
+    /** The RecyclerView's adapter */
     private AttendanceAdapter adapter;
+    /** The data model that allows us to pass information between tabs */
     private SharedViewModel model;
+    /** The list of students in this tab */
     private List<Student> studentList;
+    /** The course we are taking attendance for */
     private Course course;
 
+    /**
+     * The empty required constructor.
+     */
     public TardyFragment() {
         // Required empty public constructor
     }
@@ -45,6 +53,23 @@ public class TardyFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Called to do initial creation of a fragment.  This is called after
+     * {@link #onAttach(Activity)} and before
+     * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     *
+     * <p>Note that this can be called while the fragment's activity is
+     * still in the process of being created.  As such, you can not rely
+     * on things like the activity's content view hierarchy being initialized
+     * at this point.  If you want to do work once the activity itself is
+     * created, see {@link #onActivityCreated(Bundle)}.
+     *
+     * <p>Any restored child fragments will be created before the base
+     * <code>Fragment.onCreate</code> method returns.</p>
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     *                           a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +79,21 @@ public class TardyFragment extends Fragment {
         course = model.getCourse();
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * <p>If you return a View from here, it will later be called in
+     * {@link #onDestroyView} when the view is being released.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate
+     *                           any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's
+     *                           UI should be attached to.  The fragment should not add the view itself,
+     *                           but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

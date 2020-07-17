@@ -11,11 +11,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".TabbedAttendanceActivity"
-            android:label="@string/title_activity_tabbed_attendance"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            />
+            android:label="@string/title_activity_tabbed_attendance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -22,4 +22,7 @@
     </string-array>
 
     <string name="title_activity_tabbed_attendance">Attendance Activity</string>
+
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
 </resources>

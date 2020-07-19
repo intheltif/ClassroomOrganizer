@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -106,6 +107,18 @@ public class AttendanceAdapter
                     public void onClick(View v) {
                         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         ((Activity)mContext).startActivityForResult(intent, PICK_IMAGE);
+                    }
+                });
+
+                final ImageButton delStd = dialog.findViewById(R.id.btn_delete_student);
+                delStd.setOnClickListener(new View.OnClickListener() {
+                    /**
+                     * Called when a view has been clicked.
+                     *
+                     * @param v The view that was clicked.
+                     */
+                    @Override
+                    public void onClick(View v) {
                     }
                 });
 

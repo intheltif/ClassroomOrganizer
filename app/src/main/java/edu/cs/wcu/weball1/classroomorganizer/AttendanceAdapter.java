@@ -119,6 +119,10 @@ public class AttendanceAdapter
                      */
                     @Override
                     public void onClick(View v) {
+                        removeAt(position);
+                        roster.remove(position);
+                        recyclerView.getAdapter().notifyItemChanged(position);
+                        dialog.dismiss();
                     }
                 });
 

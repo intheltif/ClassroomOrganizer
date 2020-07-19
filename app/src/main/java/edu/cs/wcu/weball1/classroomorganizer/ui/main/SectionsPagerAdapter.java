@@ -18,7 +18,6 @@ import edu.cs.wcu.weball1.classroomorganizer.TardyFragment;
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  *
- * TODO: Convert to FragmentStateAdapter using ViewPager2 class
  */
 public class SectionsPagerAdapter extends FragmentStateAdapter {
 

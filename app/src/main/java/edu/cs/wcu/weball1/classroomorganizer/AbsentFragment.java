@@ -90,7 +90,6 @@ public class AbsentFragment extends Fragment {
         dialog = new Dialog(getContext());
 
 
-        // TODO: Make fab add a student.
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -188,6 +188,13 @@ public class AttendanceAdapter
         notifyItemRangeChanged(position, roster.size());
     }
 
+    public void addItem(int position, Student student) {
+        roster.add(position, student);
+        notifyItemInserted(position);
+        notifyItemRangeChanged(position, roster.size());
+        notifyDataSetChanged();
+    }
+
     /**
      * Updates the list of students once data has changed.
      *

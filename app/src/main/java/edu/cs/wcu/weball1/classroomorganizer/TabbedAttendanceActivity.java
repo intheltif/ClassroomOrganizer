@@ -1,8 +1,19 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -47,6 +58,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
 
     /** The ImageView for the students photo */
     ImageView img;
+
 
     /**
      * Called when the activity is starting. This is where most initialization goes.
@@ -101,18 +113,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         Course course = setUpCourse();
         // Set up model to load shared persistent data
         updateSharedPersistentDataForCourse(course);
-
-        // TODO: Make fab add a student.
-        /*
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-         */
 
     } // end onCreate method
 

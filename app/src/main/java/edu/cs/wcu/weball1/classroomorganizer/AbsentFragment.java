@@ -1,6 +1,8 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -11,10 +13,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -35,6 +43,8 @@ public class AbsentFragment extends Fragment {
     private List<Student> studentList;
     /** The course we are taking attendance for */
     private Course course;
+
+    Dialog dialog;
 
     /**
      * The empty required constructor.
@@ -77,6 +87,61 @@ public class AbsentFragment extends Fragment {
         model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         studentList = model.getAbsentList();
         course = model.getCourse();
+        dialog = new Dialog(getContext());
+
+
+        // TODO: Make fab add a student.
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.setContentView(R.layout.dialog_add_student);
+                dialog.setTitle("Add New Student");
+                dialog.show();
+
+                final Button btnAdd = dialog.findViewById(R.id.btn_add);
+                final Button btnCancel = dialog.findViewById(R.id.btn_cancel);
+                final EditText etFirstName = dialog.findViewById(R.id.et_first_name);
+                final EditText etLastName = dialog.findViewById(R.id.et_last_name);
+
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    /**
+                     * Called when a view has been clicked.
+                     *
+                     * @param v The view that was clicked.
+                     */
+                    @Override
+                    public void onClick(View v) {
+                        String first = etFirstName.getText().toString();
+                        String last = etLastName.getText().toString();
+                        if( !first.equals("") && !last.equals("")) {
+                            Student std = new Student(first, last, "92000000" + adapter.getItemCount());
+                            adapter.addItem(0, std);
+                            model.appendToList(std, "new", "absent");
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(dialog.getContext(),
+                                    "The values for the student's name are missing.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    /**
+                     * Called when a view has been clicked.
+                     *
+                     * @param v The view that was clicked.
+                     */
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+
+
+            } // end onClick method
+        }); // end setOnClickListener
     }
 
     /**

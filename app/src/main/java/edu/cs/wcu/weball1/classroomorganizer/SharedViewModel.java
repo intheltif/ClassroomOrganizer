@@ -1,7 +1,15 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +21,21 @@ import java.util.List;
  * @version 22 June 2020
  */
 public class SharedViewModel extends ViewModel {
+
+    /** Constant for logcat output */
+    private static final String SVM = "SharedViewModel";
+
+    /** Constants for each of the csv fields */
+    private static final int NINE_TWO_INDEX       = 0;
+    private static final int FIRST_NAME_INDEX     = 1;
+    private static final int LAST_NAME_INDEX      = 2;
+    private static final int EMAIL_INDEX          = 3;
+    private static final int PHOTO_PATHNAME_INDEX = 4;
+    private static final int ATTENDANCE_INDEX     = 5;
+
+    /** Constant to represent empty string length */
+    private static final int ZERO = 0;
+
     /** The students that are currently present. */
     private List<Student> presentList = new ArrayList<>();
 
@@ -124,5 +147,67 @@ public class SharedViewModel extends ViewModel {
                 break;
         }
     }
+
+    /**
+     * Reads in a list of students from a CSV file.
+     * The properties are in the following order:
+     *     920# | First Name | Last Name | Email | Photo Path | Attendance
+     *
+     * The CSV may have missing fields, but it most be in the above order.
+     *
+     * @param resource The csv file in the android resource raw directory (
+     */
+    protected void readFromCSV(InputStream resource) {
+        // Open reader using InputStream parameter
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(resource, StandardCharsets.UTF_8)
+        );
+
+        // Read the data
+        String line = "";
+        try {
+            while((line = reader.readLine()) != null) {
+                // split by commas
+                String[] tokens = line.split(",");
+
+                Student student = new Student();
+                // Create student object from stream and validating input
+                switch(tokens.length) {
+                    case 6:
+                        if(tokens[ATTENDANCE_INDEX].length() > ZERO) {
+                            student.setAttendance(tokens[ATTENDANCE_INDEX]);
+                        }
+                    case 5:
+                        if(tokens[PHOTO_PATHNAME_INDEX].length() > ZERO) {
+                            student.setPhotoPath(tokens[PHOTO_PATHNAME_INDEX]);
+                        }
+                    case 4:
+                        if(tokens[EMAIL_INDEX].length() > ZERO) {
+                            student.setEmail(tokens[EMAIL_INDEX]);
+                        }
+                    case 3:
+                        if(tokens[LAST_NAME_INDEX].length() > ZERO) {
+                            student.setSurname(tokens[LAST_NAME_INDEX]);
+                        }
+                    case 2:
+                        if(tokens[FIRST_NAME_INDEX].length() > ZERO) {
+                            student.setFirstName(tokens[FIRST_NAME_INDEX]);
+                        }
+                    case 1:
+                        if(tokens[NINE_TWO_INDEX].length() > ZERO) {
+                            student.setID(tokens[NINE_TWO_INDEX]);
+                        }
+                }
+            } // end while
+
+            // Close reader and stream
+            reader.close();
+            resource.close();
+        } catch(IOException ioe) {
+            // Failed to read the data, that's bad. Use wtf log.
+            Log.wtf(SVM, "Error reading student data file on line " + line, ioe);
+            ioe.printStackTrace();
+        } // end try-catch
+    } // end readFromCSV method
 
 } // end SharedViewModel class

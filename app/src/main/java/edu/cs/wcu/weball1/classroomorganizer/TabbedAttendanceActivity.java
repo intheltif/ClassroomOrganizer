@@ -2,6 +2,7 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -10,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
+
+import java.io.InputStream;
+import java.util.ArrayList;
 
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
 
@@ -60,6 +64,13 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_attendance);
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        model = new ViewModelProvider(this).get(SharedViewModel.class);
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
         img = findViewById(R.id.iv_student_photo);
 
         // Get references to ViewPager2 and TabLayout elements
@@ -111,13 +122,16 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
      */
     private Course setUpCourse() {
 
-        // Creating the list of students from an XML string-array
-        String[] stdList = this.getResources().getStringArray(R.array.cs101);
         Course course = new Course();
-        for(int i = 0; i < stdList.length; i++) {
-            String[] nameArr = stdList[i].split(" ");
-            course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));
-        }
+        // Creating the list of students from an XML string-array
+//        String[] stdList = this.getResources().getStringArray(R.array.cs101);
+//        for(int i = 0; i < stdList.length; i++) {
+//            String[] nameArr = stdList[i].split(" ");
+//            course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));
+//        }
+        InputStream stream = getResources().openRawResource(R.raw.attendance);
+        //ArrayList<Student> stds = model.readFromCSV(stream);
+        course.addStudents(model.readFromCSV(stream));
         return course;
     } // end setUpCourse method
 
@@ -127,7 +141,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
      */
     private void updateSharedPersistentDataForCourse(Course course) {
         // Load shared persistent data
-        model = new ViewModelProvider(this).get(SharedViewModel.class);
         model.setAbsentList(course.getList("absent"));
         model.setPresentList(course.getList("present"));
         model.setTardyList(course.getList("tardy"));

@@ -118,6 +118,13 @@ public class Course {
         roster.add(std);
         mark(std, "absent");
     } // end addStudent method
+
+    public void addStudents(ArrayList<Student> stdList) {
+        for(Student std: stdList) {
+            mark(std, "absent");
+        }
+        roster = stdList;
+    }
     
     /**
      * Returns the number of students enrolled in this course

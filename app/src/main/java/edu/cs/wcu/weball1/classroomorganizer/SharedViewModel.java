@@ -157,7 +157,8 @@ public class SharedViewModel extends ViewModel {
      *
      * @param resource The csv file in the android resource raw directory (
      */
-    protected void readFromCSV(InputStream resource) {
+    protected ArrayList<Student> readFromCSV(InputStream resource) {
+        ArrayList<Student> studentList = new ArrayList<>();
         // Open reader using InputStream parameter
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(resource, StandardCharsets.UTF_8)
@@ -198,6 +199,7 @@ public class SharedViewModel extends ViewModel {
                             student.setID(tokens[NINE_TWO_INDEX]);
                         }
                 }
+                studentList.add(student);
             } // end while
 
             // Close reader and stream
@@ -208,6 +210,9 @@ public class SharedViewModel extends ViewModel {
             Log.wtf(SVM, "Error reading student data file on line " + line, ioe);
             ioe.printStackTrace();
         } // end try-catch
+
+        // Return the list of students
+        return studentList;
     } // end readFromCSV method
 
 } // end SharedViewModel class

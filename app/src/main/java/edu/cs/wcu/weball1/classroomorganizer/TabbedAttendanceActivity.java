@@ -172,7 +172,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.drawer_menu, menu);
+        getMenuInflater().inflate(R.menu.attendance_actions_menu, menu);
         return true;
     }
 
@@ -195,8 +195,12 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case 1:
-                // do stuff
+            case R.id.save_button:
+                //onSaveButtonClicked();
+            case R.id.load_csv_button:
+                //onLoadCSVButtonClicked();
+            case R.id.mark_all_btn:
+                //onMarkAllPresentButtonClicked();
         } // end switch
 
         return super.onOptionsItemSelected(item);

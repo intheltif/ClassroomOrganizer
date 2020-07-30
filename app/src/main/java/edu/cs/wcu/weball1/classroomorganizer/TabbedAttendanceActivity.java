@@ -2,7 +2,6 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
 
@@ -64,15 +62,10 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_attendance);
-
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        model = new ViewModelProvider(this).get(SharedViewModel.class);
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
         img = findViewById(R.id.iv_student_photo);
 
+        // Set up the ViewModel to allow data to be passed back and forth
+        model = new ViewModelProvider(this).get(SharedViewModel.class);
         // Get references to ViewPager2 and TabLayout elements
         viewPager = findViewById(R.id.view_pager);
         tabs = findViewById(R.id.tabs);
@@ -123,14 +116,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     private Course setUpCourse() {
 
         Course course = new Course();
-        // Creating the list of students from an XML string-array
-//        String[] stdList = this.getResources().getStringArray(R.array.cs101);
-//        for(int i = 0; i < stdList.length; i++) {
-//            String[] nameArr = stdList[i].split(" ");
-//            course.addStudent(nameArr[0], nameArr[1], "92000000" + (i+1));
-//        }
         InputStream stream = getResources().openRawResource(R.raw.attendance);
-        //ArrayList<Student> stds = model.readFromCSV(stream);
         course.addStudents(model.readFromCSV(stream));
         return course;
     } // end setUpCourse method

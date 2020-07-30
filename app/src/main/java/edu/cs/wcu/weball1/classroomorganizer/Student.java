@@ -1,9 +1,5 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
-import android.graphics.drawable.Drawable;
-import android.net.sip.SipSession;
-import android.widget.Toast;
-
 /**
  * A student that can enroll in courses.
  *

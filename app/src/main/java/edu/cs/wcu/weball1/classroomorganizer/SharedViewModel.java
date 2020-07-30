@@ -166,6 +166,9 @@ public class SharedViewModel extends ViewModel {
         // Read the data
         String line = "";
         try {
+            // Step over headers
+            reader.readLine();
+            // Read in the data
             while((line = reader.readLine()) != null) {
                 // split by commas
                 String[] tokens = line.split(",");
@@ -210,7 +213,7 @@ public class SharedViewModel extends ViewModel {
             ioe.printStackTrace();
         } // end try-catch
 
-        // Return the list of students
+        // Return the sorted list of students
         return studentList;
     } // end readFromCSV method
 

@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 
 /**
  * A course that contains a list of students, the name of the course, and the 
- * semseter the course is being held in.
+ * semester the course is being held in.
  *
  * @author Evert Ball
  * @version 1.0.0
@@ -21,12 +21,12 @@ public class Course {
     /** The name of the course */
     private String courseName;
 
-    /** The semeseter this course is being held in */
+    /** The semester this course is being held in */
     private String semester;
     
     /**
      * Constructs a course with an empty roster and no course name or 
-     * semeseter.
+     * semester.
      */
     public Course() {
 

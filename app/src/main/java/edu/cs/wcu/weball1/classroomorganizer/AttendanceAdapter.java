@@ -105,7 +105,8 @@ public class AttendanceAdapter
                      */
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         ((Activity)mContext).startActivityForResult(intent, PICK_IMAGE);
                     }
                 });
@@ -130,7 +131,8 @@ public class AttendanceAdapter
                 dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        student.setFullName(first_editText.getText().toString(), last_editText.getText().toString());
+                        student.setFullName(first_editText.getText().toString(),
+                                last_editText.getText().toString());
                         recyclerView.getAdapter().notifyItemChanged(position);
                     }
                 }); // end cancel listener
@@ -162,7 +164,8 @@ public class AttendanceAdapter
      * @param viewType The view type of the new View.
      * @return A new ViewHolder of type AttendanceViewHolder.
      */
-    public AttendanceAdapter.AttendanceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AttendanceAdapter.AttendanceViewHolder onCreateViewHolder(
+            ViewGroup parent, int viewType) {
         LinearLayout l = (LinearLayout) LayoutInflater.from(parent.getContext())
             .inflate(R.layout.student_card, parent, false);
 
@@ -228,7 +231,10 @@ public class AttendanceAdapter
          * @param firstName The TextView that holds the first name of the student
          * @param lastName The TextView that holds the last name of the student.
          */
-        public AttendanceViewHolder(View root, ImageView studentPhoto, TextView firstName, TextView lastName) {
+        public AttendanceViewHolder(View root,
+                                    ImageView studentPhoto,
+                                    TextView firstName,
+                                    TextView lastName) {
             super(root);
             this.root = root;
             this.studentPhoto = studentPhoto;

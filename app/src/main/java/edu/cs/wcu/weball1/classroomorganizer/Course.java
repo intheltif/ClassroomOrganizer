@@ -36,6 +36,10 @@ public class Course {
 
     } // end empty constructor
 
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     public String getCourseName() {
         return this.courseName;
     }

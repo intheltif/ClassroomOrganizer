@@ -1,6 +1,8 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,16 +10,17 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -28,9 +31,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
 
@@ -72,6 +74,11 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     /** The current day in the format dd_mm_yyyy. Used to append to filenames */
     private String currDate;
 
+    /** The File to send by email/text/etc that contains the students attendance. */
+    private File fileToSend;
+
+    private Course course;
+
 
     /**
      * Called when the activity is starting. This is where most initialization goes.
@@ -87,7 +94,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         img = findViewById(R.id.iv_student_photo);
 
         // Get today's date as a string
-        SimpleDateFormat formatter = new SimpleDateFormat("MM_dd_yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM_dd_yyyy", Locale.US);
         Date date = new Date();
         currDate = formatter.format(date);
 
@@ -96,8 +103,12 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar bar = getSupportActionBar();
         if(bar != null) {
+            //show usable back button
             bar.setDisplayHomeAsUpEnabled(true);
             bar.setHomeButtonEnabled(true);
+            //show title
+            bar.setDisplayShowTitleEnabled(false);
+
         }
 
         // Set up the ViewModel to allow data to be passed back and forth
@@ -138,10 +149,15 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         // Ensure absent tab is selected at startup
         tabs.selectTab(tabs.getTabAt(ABSENT_TAB_INDEX));
         // Create course with a list of students.
-        Course course = setUpCourse();
+        setUpCourse("CS101");
         // Set up model to load shared persistent data
         updateSharedPersistentDataForCourse(course);
-
+        if(bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setHomeButtonEnabled(true);
+            bar.setDisplayShowTitleEnabled(true);
+            bar.setTitle("Course: " + course.getCourseName().toUpperCase());
+        }
     } // end onCreate method
 
     /**
@@ -149,10 +165,12 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
      *
      * @return The course that was created from the string-array of student names.
      */
-    private Course setUpCourse() {
+    private void setUpCourse(String courseName) {
 
-        Course course = new Course();
-        File filename = new File(getExternalFilesDir(null),"attendance_" + currDate + ".csv");
+        course = new Course();
+        course.setCourseName(courseName);
+        File filename = new File(getExternalFilesDir(null),"attendance_" +
+                course.getCourseName() + "_" + currDate + ".csv");
         if(filename.exists()) {
             try {
                 InputStream existsStream = new FileInputStream(filename);
@@ -165,7 +183,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
             InputStream newStream = getResources().openRawResource(R.raw.attendance);
             course.addStudents(model.readFromCSV(newStream));
         }
-        return course;
     } // end setUpCourse method
 
     /**
@@ -253,6 +270,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
      */
     private void onSaveButtonClicked() {
 
+        fileToSend = model.writeToCSV(getApplicationContext(), currDate, course.getCourseName());
         // Allows us to use file:// instead of content:// for sharing the CSV
         if(Build.VERSION.SDK_INT >= 24) {
             try{
@@ -262,16 +280,36 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        AlertDialog.Builder shareFileAD = new AlertDialog.Builder(this);
+        shareFileAD.setTitle("Share CSV?");
+        shareFileAD.setMessage("Would you like to share the CSV file you just created?");
+        shareFileAD.setPositiveButton(R.string.share_csv, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                if(fileToSend.exists()) {
+                    intentShareFile.setType("text/plain");
+                    intentShareFile.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileToSend));
+                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Attendance for " + currDate);
+                    intentShareFile.putExtra(Intent.EXTRA_TEXT, "Attached is CSV file for " +
+                            "the attendance taken on: " + currDate);
+                    startActivity(Intent.createChooser(intentShareFile, "Share File"));
+                }
+                dialog.dismiss();
+            } // end onClick
+        }); // end setPositiveButton
 
-        File fileToSend = model.writeToCSV(getApplicationContext(), currDate);
-        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-        if(fileToSend.exists()) {
-            intentShareFile.setType("application/csv");
-            intentShareFile.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileToSend));
-            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Attendance for " + currDate);
-            startActivity(Intent.createChooser(intentShareFile, "Share File"));
-        }
+        shareFileAD.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            } // end onClick
+        }); // end setNegativeButton
+
+        // Show the created dialog
+        shareFileAD.create().show();
+
     } // end onSavedButtonClicked method
 
     private void onMarkAllPresentButtonClicked() {

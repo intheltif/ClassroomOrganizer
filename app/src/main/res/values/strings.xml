@@ -6,24 +6,6 @@
     <string name="save_text">Save</string>
     <string name="load_csv_text">Load from CSV</string>
     <string name="mark_all_present">Mark All Present</string>
-
-    <!--    <string-array name="cs101">-->
-    <!--        <item>Phillip Thompson</item>-->
-    <!--        <item>David Mitchell</item>-->
-    <!--        <item>Roger Hall</item>-->
-    <!--        <item>John Mulaney</item>-->
-    <!--        <item>Lee Mack</item>-->
-    <!--        <item>Amy Jones</item>-->
-    <!--        <item>Rob Brydon</item>-->
-    <!--        <item>Bob Mortimer</item>-->
-    <!--        <item>Kim Kardashian</item>-->
-    <!--        <item>Post Malone</item>-->
-    <!--        <item>Al Coholic</item>-->
-    <!--        <item>Ozzy Osbourne</item>-->
-    <!--        <item>Keanu Reeves</item>-->
-    <!--        <item>Patton Oswalt</item>-->
-    <!--        <item>Issac Newton</item>-->
-    <!--        <item>Kylo Ren</item>-->
-    <!--        <item>Darth Vader</item>-->
-    <!--    </string-array>-->
+    <string name="share_csv">Share CSV</string>
+    <string name="cancel">Cancel</string>
 </resources>

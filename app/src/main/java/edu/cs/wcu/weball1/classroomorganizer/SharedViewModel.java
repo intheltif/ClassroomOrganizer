@@ -222,14 +222,14 @@ public class SharedViewModel extends ViewModel {
         return studentList;
     } // end readFromCSV method
 
-    protected File writeToCSV(Context context, String date) {
+    protected File writeToCSV(Context context, String date, String courseName) {
 
         ArrayList<Student> students = new ArrayList<>();
         students.addAll(getPresentList());
         students.addAll(getAbsentList());
         students.addAll(getTardyList());
 
-        String filename = "attendance" + "_"+ date + ".csv";
+        String filename = "attendance" + "_" + courseName.toLowerCase() + "_" + date + ".csv";
         File file = null;
         try {
             File path = context.getExternalFilesDir(null);

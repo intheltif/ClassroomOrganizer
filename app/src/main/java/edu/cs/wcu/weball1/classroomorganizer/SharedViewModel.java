@@ -222,30 +222,18 @@ public class SharedViewModel extends ViewModel {
         return studentList;
     } // end readFromCSV method
 
-    protected void writeToCSV(Context context) {
+    protected File writeToCSV(Context context, String date) {
 
         ArrayList<Student> students = new ArrayList<>();
         students.addAll(getPresentList());
         students.addAll(getAbsentList());
         students.addAll(getTardyList());
 
-        String filename = "attendance" + ".csv";
-//        try {
-//            FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-//            for (Student student : students) {
-//                outputStream.write(student.toCSV().getBytes());
-//            }
-//            String msg = "Saved to " + context.getFilesDir().toString() + "/" + filename;
-//            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-//            outputStream.close();
-//        } catch (IOException ioe) {
-//            Log.e(SVM, "Error writing student data to CSV" );
-//            ioe.printStackTrace();
-//        }
-//        Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show();
+        String filename = "attendance" + "_"+ date + ".csv";
+        File file = null;
         try {
             File path = context.getExternalFilesDir(null);
-            File file = new File(path, filename);
+            file = new File(path, filename);
             FileOutputStream stream = new FileOutputStream(file);
             stream.write("920#,First Name,Last Name,Email,Photo Path,Attendance\n".getBytes());
             for(Student std : students) {
@@ -258,6 +246,7 @@ public class SharedViewModel extends ViewModel {
             Log.e(SVM, "++++++++++++++>>>COULD NOT WRITE DARNIT<<<<<<===========================");
             e.printStackTrace();
         }
+        return file;
     }
 
 } // end SharedViewModel class

@@ -248,7 +248,9 @@ public class Student {
     } // end toString
 
     public String toCSV() {
-        return this.firstName +
+        return this.studentID +
+                "," +
+                this.firstName +
                 "," +
                 this.surname +
                 "," +

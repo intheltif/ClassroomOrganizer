@@ -1,6 +1,11 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -17,8 +22,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
@@ -58,6 +69,9 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     /** The ImageView for the students photo */
     ImageView img;
 
+    /** The current day in the format dd_mm_yyyy. Used to append to filenames */
+    private String currDate;
+
 
     /**
      * Called when the activity is starting. This is where most initialization goes.
@@ -71,6 +85,11 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_attendance);
         img = findViewById(R.id.iv_student_photo);
+
+        // Get today's date as a string
+        SimpleDateFormat formatter = new SimpleDateFormat("MM_dd_yyyy");
+        Date date = new Date();
+        currDate = formatter.format(date);
 
         //Set up the toolbar and allow back button
         Toolbar toolbar = findViewById(R.id.toolbar_main);
@@ -133,8 +152,19 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     private Course setUpCourse() {
 
         Course course = new Course();
-        InputStream stream = getResources().openRawResource(R.raw.attendance);
-        course.addStudents(model.readFromCSV(stream));
+        File filename = new File(getExternalFilesDir(null),"attendance_" + currDate + ".csv");
+        if(filename.exists()) {
+            try {
+                InputStream existsStream = new FileInputStream(filename);
+                course.addStudents(model.readFromCSV(existsStream));
+            } catch (FileNotFoundException fnfe) {
+                Log.e("TABBED", "Could not find the specified file...");
+                fnfe.printStackTrace();
+            }
+        } else {
+            InputStream newStream = getResources().openRawResource(R.raw.attendance);
+            course.addStudents(model.readFromCSV(newStream));
+        }
         return course;
     } // end setUpCourse method
 
@@ -222,7 +252,26 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
      * Saves the attendance record to a CSV file when the save icon is clicked.
      */
     private void onSaveButtonClicked() {
-          model.writeToCSV(getApplicationContext());
+
+        // Allows us to use file:// instead of content:// for sharing the CSV
+        if(Build.VERSION.SDK_INT >= 24) {
+            try{
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        File fileToSend = model.writeToCSV(getApplicationContext(), currDate);
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        if(fileToSend.exists()) {
+            intentShareFile.setType("application/csv");
+            intentShareFile.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileToSend));
+            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Attendance for " + currDate);
+            startActivity(Intent.createChooser(intentShareFile, "Share File"));
+        }
     } // end onSavedButtonClicked method
 
     private void onMarkAllPresentButtonClicked() {

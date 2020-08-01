@@ -173,12 +173,14 @@ public class AbsentFragment extends Fragment {
             @Override
             public void onRightClicked(int position) {
                 Student student = studentList.get(position);
+                course.mark(student, "present");
                 refreshData(position, "present", student);
             } // end onRightClicked method
 
             @Override
             public void onLeftClicked(int position) {
                 Student student = studentList.get(position);
+                course.mark(student, "tardy");
                 refreshData(position, "tardy", student);
             } // end onLeftClicked method
         }; // end concrete implementation of abstract class

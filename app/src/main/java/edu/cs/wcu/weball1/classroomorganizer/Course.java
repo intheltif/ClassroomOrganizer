@@ -89,6 +89,10 @@ public class Course {
 
     } // end full constructor
 
+    public String getCourseName() {
+        return this.courseName;
+    }
+
     /**
      * Adds students that have been read in from a file to the course.
      */

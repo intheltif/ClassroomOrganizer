@@ -1,10 +1,15 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,13 +41,13 @@ public class SharedViewModel extends ViewModel {
     private static final int ZERO = 0;
 
     /** The students that are currently present. */
-    private List<Student> presentList = new ArrayList<>();
+    private ArrayList<Student> presentList = new ArrayList<>();
 
     /** The students that are currently absent. */
-    private List<Student> absentList = new ArrayList<>();
+    private ArrayList<Student> absentList = new ArrayList<>();
 
     /** The students that are currently tardy. */
-    private List<Student> tardyList = new ArrayList<>();
+    private ArrayList<Student> tardyList = new ArrayList<>();
 
     /** The course we are taking attendance for. */
     private Course course;
@@ -52,7 +57,7 @@ public class SharedViewModel extends ViewModel {
      * @param list The list of present students to hold.
      */
     public void setPresentList(List<Student> list) {
-        presentList = list;
+        presentList = new ArrayList<>(list);
     }
 
     /**
@@ -60,7 +65,7 @@ public class SharedViewModel extends ViewModel {
      * @param list The list of absent students to hold.
      */
     public void setAbsentList(List<Student> list) {
-        absentList = list;
+        absentList = new ArrayList<>(list);
     }
 
     /**
@@ -68,7 +73,7 @@ public class SharedViewModel extends ViewModel {
      * @param list The list of tardy students to hold.
      */
     public void setTardyList(List<Student> list) {
-        tardyList = list;
+        tardyList = new ArrayList<>(list);
     }
 
     /**
@@ -91,7 +96,7 @@ public class SharedViewModel extends ViewModel {
      * Returns the list of present students.
      * @return The list of present students.
      */
-    public List<Student> getPresentList() {
+    public ArrayList<Student> getPresentList() {
         return presentList;
     }
 
@@ -99,7 +104,7 @@ public class SharedViewModel extends ViewModel {
      * Returns the list of absent students.
      * @return The list of absent students.
      */
-    public List<Student> getAbsentList() {
+    public ArrayList<Student> getAbsentList() {
         return absentList;
     }
 
@@ -107,7 +112,7 @@ public class SharedViewModel extends ViewModel {
      * Returns the list of tardy students.
      * @return The list of tardy students.
      */
-    public List<Student> getTardyList() {
+    public ArrayList<Student> getTardyList() {
         return tardyList;
     }
 
@@ -216,5 +221,43 @@ public class SharedViewModel extends ViewModel {
         // Return the sorted list of students
         return studentList;
     } // end readFromCSV method
+
+    protected void writeToCSV(Context context) {
+
+        ArrayList<Student> students = new ArrayList<>();
+        students.addAll(getPresentList());
+        students.addAll(getAbsentList());
+        students.addAll(getTardyList());
+
+        String filename = "attendance" + ".csv";
+//        try {
+//            FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+//            for (Student student : students) {
+//                outputStream.write(student.toCSV().getBytes());
+//            }
+//            String msg = "Saved to " + context.getFilesDir().toString() + "/" + filename;
+//            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+//            outputStream.close();
+//        } catch (IOException ioe) {
+//            Log.e(SVM, "Error writing student data to CSV" );
+//            ioe.printStackTrace();
+//        }
+//        Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show();
+        try {
+            File path = context.getExternalFilesDir(null);
+            File file = new File(path, filename);
+            FileOutputStream stream = new FileOutputStream(file);
+            stream.write("920#,First Name,Last Name,Email,Photo Path,Attendance\n".getBytes());
+            for(Student std : students) {
+                stream.write(std.toCSV().getBytes());
+            }
+            String msg = "Saved to " + file.getAbsolutePath();
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            stream.close();
+        } catch(Exception e) {
+            Log.e(SVM, "++++++++++++++>>>COULD NOT WRITE DARNIT<<<<<<===========================");
+            e.printStackTrace();
+        }
+    }
 
 } // end SharedViewModel class

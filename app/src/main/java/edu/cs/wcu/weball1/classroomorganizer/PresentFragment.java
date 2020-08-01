@@ -107,12 +107,14 @@ public class PresentFragment extends Fragment {
             @Override
             public void onRightClicked(int position) {
                 Student student = studentList.get(position);
+                course.mark(student, "tardy");
                 refreshData(position, "tardy", student);
             } // end onRightClicked method
 
             @Override
             public void onLeftClicked(int position) {
                 Student student = studentList.get(position);
+                course.mark(student, "absent");
                 refreshData(position, "absent", student);
             } // end onLeftClicked method
         }; // end concrete implementation of abstract class

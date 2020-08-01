@@ -4,17 +4,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
 
@@ -67,12 +72,13 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tabbed_attendance);
         img = findViewById(R.id.iv_student_photo);
 
-        //Set up the toolbar
+        //Set up the toolbar and allow back button
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        if(getActionBar() != null) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setHomeButtonEnabled(true);
+        ActionBar bar = getSupportActionBar();
+        if(bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setHomeButtonEnabled(true);
         }
 
         // Set up the ViewModel to allow data to be passed back and forth
@@ -196,14 +202,31 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_button:
-                //onSaveButtonClicked();
+                onSaveButtonClicked();
+                break;
             case R.id.load_csv_button:
                 //onLoadCSVButtonClicked();
+                break;
             case R.id.mark_all_btn:
                 //onMarkAllPresentButtonClicked();
+                break;
+            case android.R.id.home:
+                // Exit without saving
+                finish();
         } // end switch
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Saves the attendance record to a CSV file when the save icon is clicked.
+     */
+    private void onSaveButtonClicked() {
+          model.writeToCSV(getApplicationContext());
+    } // end onSavedButtonClicked method
+
+    private void onMarkAllPresentButtonClicked() {
+
     }
 
     //TODO Find fix for accepting incoming photo from media gallery

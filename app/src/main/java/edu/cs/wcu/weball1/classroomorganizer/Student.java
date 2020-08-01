@@ -247,4 +247,16 @@ public class Student {
         return "" + this.studentID + " " + this.firstName + " " + this.surname;
     } // end toString
 
+    public String toCSV() {
+        return this.firstName +
+                "," +
+                this.surname +
+                "," +
+                this.email +
+                "," +
+                this.photoPathname +
+                "," +
+                this.attendance +
+                "\n";
+    }
 } // end Student class

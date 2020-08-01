@@ -1,11 +1,7 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
-import android.widget.ArrayAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +17,6 @@ public class Course {
 
     /** List of students enrolled in the course */
     private ArrayList<Student> roster;
-    private Scanner scan;
 
     /** The name of the course */
     private String courseName;
@@ -38,78 +33,13 @@ public class Course {
         this.roster = new ArrayList<>();
         this.courseName = null;
         this.semester = null;
-        this.scan = null;
 
     } // end empty constructor
-
-    /**
-     * Constructs a course with a populated roster but no semester or course
-     * name.
-     *
-     * @param filename The name of the file to populate the roster from.
-     */
-    public Course(String filename) {
-
-        this.roster = new ArrayList<>();
-        this.courseName = null;
-        this.semester = null;
-        try {
-            this.scan = new Scanner(new File(filename));
-        } catch(FileNotFoundException fnfe) {
-            System.err.println("File not found...");
-            System.exit(1);
-        }
-        
-        populateCourse();
-
-    } // end only filename constructor
-    
-    /**
-     * Constructs a populated course with a course name and semester.
-     *
-     * @param filename The name of the file to populate the roster from.
-     * @param name     The name of the course (i.e. CS 495).
-     * @param semester The semester this course is being held during.
-     */
-    public Course(String filename, String name, String semester) throws FileNotFoundException {
-
-        this.roster = new ArrayList<>();
-        this.courseName = name;
-        this.semester = semester;
-
-        this.scan = new Scanner(new File(filename));
-        try {
-            this.scan = new Scanner(new File(filename));
-        } catch(FileNotFoundException fnfe) {
-            System.err.println("File not found...");
-            System.exit(1);
-        }
-
-        populateCourse();
-
-    } // end full constructor
 
     public String getCourseName() {
         return this.courseName;
     }
 
-    /**
-     * Adds students that have been read in from a file to the course.
-     */
-    private void populateCourse() {
-
-        int count = 0;
-        while(scan.hasNextLine()) {
-            String fullname = scan.nextLine().trim();
-            String[] nameArr = fullname.split(" ");
-            addStudent(nameArr[0], nameArr[1], "92000000" + count);
-            count++;
-        }
-
-        this.scan.close();
-
-    } // end populateCourse method
-    
     /**
      * Adds a new student to this course.
      *
@@ -125,7 +55,9 @@ public class Course {
 
     public void addStudents(ArrayList<Student> stdList) {
         for(Student std: stdList) {
-            mark(std, "absent");
+            if(std.getAttendance().equals("")) {
+                mark(std, "absent");
+            }
         }
         roster = stdList;
     }

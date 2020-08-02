@@ -53,12 +53,15 @@ class SwipeController extends Callback {
     /** The listener for the action to take when an item is swiped left or right */
     private SwipeControllerActions buttonsActions = null;
 
+    private String currTab;
+
     /**
      * Constructor that takes a concrete implementation of the actions the buttons perform.
      * @param buttonsActions Concrete implementation of the actions the buttons perform.
      */
-    public SwipeController(SwipeControllerActions buttonsActions) {
+    public SwipeController(SwipeControllerActions buttonsActions, String currTab) {
         this.buttonsActions = buttonsActions;
+        this.currTab = currTab;
     } // end constructor
 
     /**
@@ -299,17 +302,45 @@ class SwipeController extends Callback {
         if (buttonShowedState == ButtonState.LEFT_VISIBLE) {
             RectF leftButton = new RectF(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + buttonWidthWithoutPadding, itemView.getBottom());
-            p.setColor(Color.YELLOW);
-            c.drawRoundRect(leftButton, corners, corners, p);
-            drawText("Tardy", c, leftButton, p);
+            switch (currTab) {
+                case "absent":
+                    p.setColor(Color.YELLOW);
+                    c.drawRoundRect(leftButton, corners, corners, p);
+                    drawText("Tardy", c, leftButton, p);
+                    break;
+                case "tardy":
+                    p.setColor(Color.GREEN);
+                    c.drawRoundRect(leftButton, corners, corners, p);
+                    drawText("Present", c, leftButton, p);
+                    break;
+                case "present":
+                    p.setColor(Color.RED);
+                    c.drawRoundRect(leftButton, corners, corners, p);
+                    drawText("Absent", c, leftButton, p);
+                    break;
+            }
             buttonInstance = leftButton;
         }
         else if (buttonShowedState == ButtonState.RIGHT_VISIBLE) {
             RectF rightButton = new RectF(itemView.getRight() - buttonWidthWithoutPadding,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
-            p.setColor(Color.GREEN);
-            c.drawRoundRect(rightButton, corners, corners, p);
-            drawText("Present", c, rightButton, p);
+            switch (currTab) {
+                case "absent":
+                    p.setColor(Color.GREEN);
+                    c.drawRoundRect(rightButton, corners, corners, p);
+                    drawText("Present", c, rightButton, p);
+                    break;
+                case "tardy":
+                    p.setColor(Color.RED);
+                    c.drawRoundRect(rightButton, corners, corners, p);
+                    drawText("Absent", c, rightButton, p);
+                    break;
+                case "present":
+                    p.setColor(Color.YELLOW);
+                    c.drawRoundRect(rightButton, corners, corners, p);
+                    drawText("Tardy", c, rightButton, p);
+                    break;
+            }
             buttonInstance = rightButton;
         }
     } // end drawButtons method
@@ -324,7 +355,7 @@ class SwipeController extends Callback {
      */
     private void drawText(String text, Canvas c, RectF button, Paint p) {
         float textSize = 60;
-        p.setColor(Color.WHITE);
+        p.setColor(Color.BLACK);
         p.setAntiAlias(true);
         p.setTextSize(textSize);
 

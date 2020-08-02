@@ -189,7 +189,7 @@ public class AbsentFragment extends Fragment {
 
 
         // Attaching our swipe controller to the RecyclerView
-        final SwipeController swipeController = new SwipeController(actions);
+        final SwipeController swipeController = new SwipeController(actions, "absent");
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
         itemTouchHelper.attachToRecyclerView(recView);
 

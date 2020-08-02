@@ -49,8 +49,7 @@ public class TardyFragment extends Fragment {
      * @return A new instance of fragment AbsentFragment.
      */
     public static TardyFragment newInstance() {
-        TardyFragment fragment = new TardyFragment();
-        return fragment;
+        return new TardyFragment();
     }
 
     /**
@@ -73,7 +72,7 @@ public class TardyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        assert getActivity() != null;
         model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         studentList = model.getTardyList();
         course = model.getCourse();
@@ -173,6 +172,10 @@ public class TardyFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Marks all tardy students present by using the adapter to move them and the model to update
+     * them behind the scenes.
+     */
     public void moveAllToPresent() {
         int indexZero = 0;
         for (Student student : studentList) {

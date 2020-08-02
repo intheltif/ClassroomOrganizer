@@ -1,7 +1,6 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -149,9 +148,13 @@ public class SharedViewModel extends ViewModel {
                 }
                 tardyList.add(student);
                 break;
-        }
-    }
+        } // end switch
+    } // end appendToList method
 
+    /**
+     * Moves all students from their source list to the present list and clears the source list.
+     * @param src The String representation of the list we are moving students from.
+     */
     public void moveAllToPresent(String src) {
         if(src.toLowerCase().equals("absent")) {
             presentList.addAll(absentList);
@@ -161,7 +164,7 @@ public class SharedViewModel extends ViewModel {
             tardyList.clear();
         }
 
-    }
+    } // end moveAllToPresent method
 
     /**
      * Reads in a list of students from a CSV file.
@@ -233,31 +236,48 @@ public class SharedViewModel extends ViewModel {
         return studentList;
     } // end readFromCSV method
 
+    /**
+     * Writes student data to a CSV file. The data is in the following order:
+     *     920#, First Name, Last Name, Email, Photo Path, Attendance
+     * where Photo path is the pathname to the student's photo (NOT YET IMPLEMENTED),
+     * and attendance is the students attendance for the day (Present, Absent, or Tardy).
+     *
+     * @param context The application context.
+     * @param date the current date to add to the filename.
+     * @param courseName The name of the course we are taking attendance for.
+     *
+     * @return The CSV File object that was created.
+     */
     protected File writeToCSV(Context context, String date, String courseName) {
-
+        // Get the list of all students
         ArrayList<Student> students = new ArrayList<>();
         students.addAll(getPresentList());
         students.addAll(getAbsentList());
         students.addAll(getTardyList());
 
+        //Create correct filename according to method docs
         String filename = "attendance" + "_" + courseName.toLowerCase() + "_" + date + ".csv";
         File file = null;
         try {
+            // Get the path name to the SD card
             File path = context.getExternalFilesDir(null);
             file = new File(path, filename);
             FileOutputStream stream = new FileOutputStream(file);
+            // Write the column names for the CSV
             stream.write("920#,First Name,Last Name,Email,Photo Path,Attendance\n".getBytes());
             for(Student std : students) {
                 stream.write(std.toCSV().getBytes());
             }
+            // Show Toast to user where the CSV was saved
             String msg = "Saved to " + file.getAbsolutePath();
             Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            // Close the stream
             stream.close();
-        } catch(Exception e) {
-            Log.e(SVM, "++++++++++++++>>>COULD NOT WRITE DARNIT<<<<<<===========================");
-            e.printStackTrace();
+        } catch(IOException ioe) {
+            Log.e(SVM, "An I/O Error occurred while writing to CSV.");
+            ioe.printStackTrace();
         }
         return file;
-    }
+    } // end writeToCSV method
 
 } // end SharedViewModel class

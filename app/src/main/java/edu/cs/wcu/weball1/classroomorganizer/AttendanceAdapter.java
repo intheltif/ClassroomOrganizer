@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,7 +83,6 @@ public class AttendanceAdapter
              */
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "on click", Toast.LENGTH_LONG).show();
                 dialog = new Dialog(mContext);
                 dialog.setContentView(R.layout.dialog_edit_student);
                 dialog.setTitle("Edit Student Details");
@@ -186,11 +184,16 @@ public class AttendanceAdapter
      * @param position The student's position in the list we are removing them from.
      */
     public void removeAt(int position) {
-        //roster.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, roster.size());
     }
 
+    /**
+     * Adds a student to the roster and RecyclerView.
+     *
+     * @param position The position to add the student in the RecyclerView.
+     * @param student The student that is being added.
+     */
     public void addItem(int position, Student student) {
         roster.add(position, student);
         notifyItemInserted(position);

@@ -10,7 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -25,17 +24,6 @@ import com.google.android.material.navigation.NavigationView;
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    /** The amount of time to stay on the splash screen */
-    private static final int DELAY = 2000;
-
-    /** The Runnable object that allows delaying the main thread */
-    private Runnable runner = new Runnable() {
-        @Override
-        public void run() {
-            goToAttendanceActivity();
-        }
-    };
 
     /** The Drawer Layout that contains our side navigation drawer. */
     private DrawerLayout drawer;
@@ -56,19 +44,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    /**
-     * Called at the start of this activity. Allows us to delay the application by a set amount of
-     * time.
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        //Handler handler = new Handler();
-        //handler.postDelayed(runner, DELAY);
-    }
+    } // end onCreate method
 
     /**
      * Called when activity start-up is complete (after onStart() and onRestoreInstanceState(Bundle)
@@ -80,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
-    }
+    } // end onPostCreate method
 
     /**
      * Called by the system when the device configuration changes while your activity is running.
@@ -97,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
-    }
+    } // end onConfigurationChanged method
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -121,7 +97,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    } // end onOptionsItemSelected method
 
     /**
      * Called when an item in the navigation menu is selected.
@@ -144,7 +120,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         return true;
-    }
+    } // end onNavigationItemSelected method
 
     /**
      * Performs all of the necessary work for implementing the navigation drawer and toolbar.
@@ -161,14 +137,6 @@ public class MainActivity extends AppCompatActivity
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
         }
-    }
+    } // end setUpToolbar method
 
-    /**
-     * Starts the attendance activity, which is the next activity after
-     * the splash screen is displayed.
-     */
-    private void goToAttendanceActivity() {
-        Intent attendance = new Intent(this, TabbedAttendanceActivity.class);
-        startActivity(attendance);
-    }
-}
+} // end MainActivity class

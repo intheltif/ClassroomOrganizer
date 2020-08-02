@@ -2,7 +2,6 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,8 +41,8 @@ public class AbsentFragment extends Fragment {
     private List<Student> studentList;
     /** The course we are taking attendance for */
     private Course course;
-
-    Dialog dialog;
+    /** The Dialog used to add a new student */
+    private Dialog dialog;
 
     /**
      * The empty required constructor.
@@ -61,8 +58,7 @@ public class AbsentFragment extends Fragment {
      * @return A new instance of fragment AbsentFragment.
      */
     public static AbsentFragment newInstance() {
-        AbsentFragment fragment = new AbsentFragment();
-        return fragment;
+        return new AbsentFragment();
     }
 
     /**
@@ -90,9 +86,14 @@ public class AbsentFragment extends Fragment {
         course = model.getCourse();
         dialog = new Dialog(getContext());
 
-
+        // The button on the bottom right of the activity that allows us to add students
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param view The view that was clicked.
+             */
             @Override
             public void onClick(View view) {
                 dialog.setContentView(R.layout.dialog_add_student);
@@ -240,6 +241,10 @@ public class AbsentFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Marks all absent students present by using the adapter to move them and the model to update
+     * them behind the scenes.
+     */
     public void moveAllToPresent() {
         int indexZero = 0;
         for (Student student : studentList) {

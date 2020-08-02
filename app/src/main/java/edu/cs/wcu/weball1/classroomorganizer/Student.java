@@ -214,12 +214,7 @@ public class Student {
      * @param attendance This students current attendance as a String.
      */
     public void setAttendance(String attendance) {
-
-        System.out.println("====== Student Marked: " + attendance + " ======");
-
         this.attendance = attendance;
-
-
     }
 
     /**
@@ -247,6 +242,10 @@ public class Student {
         return "" + this.studentID + " " + this.firstName + " " + this.surname;
     } // end toString
 
+    /**
+     * Returns this student's data in the correct format for writing to the CSV file.
+     * @return The correctly formated String to write to the CSV file.
+     */
     public String toCSV() {
         return this.studentID +
                 "," +
@@ -260,5 +259,6 @@ public class Student {
                 "," +
                 this.attendance +
                 "\n";
-    }
+    } // end toCSV method
+
 } // end Student class

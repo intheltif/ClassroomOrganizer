@@ -48,9 +48,8 @@ public class PresentFragment extends Fragment {
      * @return A new instance of fragment AbsentFragment.
      */
     public static PresentFragment newInstance() {
-        PresentFragment fragment = new PresentFragment();
-        return fragment;
-    }
+        return new PresentFragment();
+    } // end newInstance static method
 
     /**
      * Called to do initial creation of a fragment.  This is called after
@@ -72,11 +71,11 @@ public class PresentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        assert getActivity() != null;
         model = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         studentList = model.getPresentList();
         course = model.getCourse();
-    }
+    } // end onCreate method
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -133,7 +132,7 @@ public class PresentFragment extends Fragment {
         });
 
         return recView;
-    }
+    } // end onCreateView method
 
     /**
      * Called when the fragment is visible to the user and actively running.
@@ -142,7 +141,7 @@ public class PresentFragment extends Fragment {
     public void onResume() {
         super.onResume();
         adapter.updateList(model.getPresentList());
-    }
+    } // end onResume method
 
     /**
      * Creates the needed objects to instantiate the recyclerview that displays the student list.
@@ -170,5 +169,5 @@ public class PresentFragment extends Fragment {
         model.appendToList(student, "present", destination);
         adapter.removeAt(position);
         adapter.notifyDataSetChanged();
-    }
+    } // end refreshData method
 }

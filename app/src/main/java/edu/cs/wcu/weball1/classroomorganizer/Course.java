@@ -2,9 +2,6 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * A course that contains a list of students, the name of the course, and the 
@@ -21,9 +18,6 @@ public class Course {
     /** The name of the course */
     private String courseName;
 
-    /** The semester this course is being held in */
-    private String semester;
-    
     /**
      * Constructs a course with an empty roster and no course name or 
      * semester.
@@ -32,7 +26,6 @@ public class Course {
 
         this.roster = new ArrayList<>();
         this.courseName = null;
-        this.semester = null;
 
     } // end empty constructor
 
@@ -44,19 +37,6 @@ public class Course {
         return this.courseName;
     }
 
-    /**
-     * Adds a new student to this course.
-     *
-     * @param fname The student's first name.
-     * @param surname The student's last name.
-     * @param id The students identification number AKA 920#.
-     */
-    public void addStudent(String fname, String surname, String id) {
-        Student std = new Student(fname, surname, id);
-        roster.add(std);
-        mark(std, "absent");
-    } // end addStudent method
-
     public void addStudents(ArrayList<Student> stdList) {
         for(Student std: stdList) {
             if(std.getAttendance().equals("")) {
@@ -65,37 +45,6 @@ public class Course {
         }
         roster = stdList;
     }
-    
-    /**
-     * Returns the number of students enrolled in this course
-     *
-     * @return The number of students currently enrolled in this course.
-     */
-    public int getNumStudents() {
-
-        return this.roster.size();
-
-    } // end getNumStudents method
-    
-    /** 
-     * Returns the roster of students.
-     *
-     * @return An ArrayList of Students.
-     */
-    public ArrayList<Student> getRoster() {
-        
-        return this.roster;
-
-    } // end getRoster method
-    
-    /**
-     * Prints the entire roster for this course.
-     */
-    public void printRoster() {
-        for(int i = 0; i < this.roster.size() - 1; i++) {
-            System.out.println(this.roster.get(i).toString());
-        }
-    } // end printRoster method
 
     /**
      * Gets the list of students that are present.

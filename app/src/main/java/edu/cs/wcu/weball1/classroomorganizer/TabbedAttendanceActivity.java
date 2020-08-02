@@ -2,7 +2,6 @@ package edu.cs.wcu.weball1.classroomorganizer;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,9 +9,6 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -31,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -43,6 +38,8 @@ import edu.cs.wcu.weball1.classroomorganizer.ui.main.SectionsPagerAdapter;
  * three attendance types as Fragments that will interact with each other to share student
  * attendance data.
  *
+ * TODO: Add onActivityResult method to handle image selection of students.
+ *
  * @author Evert Ball
  * @version 07/06/2020
  *
@@ -53,9 +50,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     private static final int PRESENT_TAB_INDEX = 0;
     private static final int ABSENT_TAB_INDEX = 1;
     private static final int TARDY_TAB_INDEX = 2;
-
-    /** The request code used by startActivityForResult for the gallery image */
-    private static final int PICK_IMAGE = 100;
 
     /** The data model that allows us to pass data between the different tabs */
     SharedViewModel model;
@@ -69,15 +63,13 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     /** The ViewPager's adapter that is required by the ViewPager */
     SectionsPagerAdapter sectionsPagerAdapter;
 
-    /** The ImageView for the students photo */
-    ImageView img;
-
     /** The current day in the format dd_mm_yyyy. Used to append to filenames */
     private String currDate;
 
     /** The File to send by email/text/etc that contains the students attendance. */
     private File fileToSend;
 
+    /** Current Course instance */
     private Course course;
 
 
@@ -92,7 +84,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed_attendance);
-        img = findViewById(R.id.iv_student_photo);
 
         // Get today's date as a string
         SimpleDateFormat formatter = new SimpleDateFormat("MM_dd_yyyy", Locale.US);
@@ -162,9 +153,8 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     } // end onCreate method
 
     /**
-     * Create the course from the XML string-array resource in Strings.xml
-     *
-     * @return The course that was created from the string-array of student names.
+     * Create the course from the saved CSV file, or from the raw resource file if the
+     * required CSV doesn't exist
      */
     private void setUpCourse(String courseName) {
 
@@ -196,7 +186,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         model.setPresentList(course.getList("present"));
         model.setTardyList(course.getList("tardy"));
         model.setCourse(course);
-    }
+    } // end updateSharedPersistentDataForCourse method
 
     /**
      * Initialize the contents of the Activity's standard options menu.  You
@@ -228,7 +218,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.attendance_actions_menu, menu);
         return true;
-    }
+    } // end onCreateOptionsMenu method
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -264,7 +254,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         } // end switch
 
         return super.onOptionsItemSelected(item);
-    }
+    } // end onOptionsItemSelected method
 
     /**
      * Saves the attendance record to a CSV file when the save icon is clicked.
@@ -313,6 +303,12 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
 
     } // end onSavedButtonClicked method
 
+    /**
+     * Called when the user selects this option from the options menu in the Toolbar.
+     *
+     * Gets instances of the absent and tardy fragments and forces them to move all their students
+     * to the present tab. This means that all student's will now be marked present for the day.
+     */
     private void onMarkAllPresentButtonClicked() {
         AbsentFragment absentFragment = (AbsentFragment) getSupportFragmentManager().findFragmentByTag("f1");
         TardyFragment tardyFragment = (TardyFragment) getSupportFragmentManager().findFragmentByTag("f2");
@@ -323,44 +319,6 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
             tardyFragment.moveAllToPresent();
         }
 
-    }
-
-    //TODO Find fix for accepting incoming photo from media gallery
-    /*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Fragment currFrag = sectionsPagerAdapter.getFragment(viewPager.getCurrentItem());
-        currFrag.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "Entered onActivityResult", Toast.LENGTH_SHORT).show();
-        img = this.findViewById(R.id.iv_student_photo);
-        if(resultCode != RESULT_CANCELED && data != null) {
-            if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-                Uri selectedImage = data.getData();
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                } catch (FileNotFoundException e) {
-                    Toast.makeText(this, "The requested file could not be found.", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    Toast.makeText(this, "An I/O error occurred...", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                } catch (NullPointerException npe) {
-                    Toast.makeText(this, "Content resolver returned null...", Toast.LENGTH_SHORT).show();
-                    npe.printStackTrace();
-                }
-                if(img != null) {
-                    img.setImageBitmap(bitmap);
-                } else {
-                    Log.e("UGGGGHHHH", "THE IMAGEVIEW IS NULL, DUMMY!!!!");
-
-                }
-            }
-        } else {
-            Toast.makeText(this, "result cancelled or null val", Toast.LENGTH_SHORT).show();
-        }
-    }
-     */
+    } // end onMarkAllPresentButtonClicked method
 
 } // end TabbedAttendanceActivity class

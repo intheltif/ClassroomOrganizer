@@ -152,6 +152,17 @@ public class SharedViewModel extends ViewModel {
         }
     }
 
+    public void moveAllToPresent(String src) {
+        if(src.toLowerCase().equals("absent")) {
+            presentList.addAll(absentList);
+            absentList.clear();
+        } else if (src.toLowerCase().equals("tardy")) {
+            presentList.addAll(tardyList);
+            tardyList.clear();
+        }
+
+    }
+
     /**
      * Reads in a list of students from a CSV file.
      * The properties are in the following order:

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -237,6 +238,18 @@ public class AbsentFragment extends Fragment {
         model.appendToList(student, "absent", destination);
         adapter.removeAt(position);
         adapter.notifyDataSetChanged();
+    }
+
+    public void moveAllToPresent() {
+        int indexZero = 0;
+        for (Student student : studentList) {
+            if(student != null) {
+                course.mark(student, "present");
+                adapter.removeAt(indexZero);
+                adapter.notifyDataSetChanged();
+            }
+        }
+        model.moveAllToPresent("absent");
     }
 
 } // end AbsentFragment class

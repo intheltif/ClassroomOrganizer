@@ -31,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -255,7 +256,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
                 //onLoadCSVButtonClicked();
                 break;
             case R.id.mark_all_btn:
-                //onMarkAllPresentButtonClicked();
+                onMarkAllPresentButtonClicked();
                 break;
             case android.R.id.home:
                 // Exit without saving
@@ -313,6 +314,14 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     } // end onSavedButtonClicked method
 
     private void onMarkAllPresentButtonClicked() {
+        AbsentFragment absentFragment = (AbsentFragment) getSupportFragmentManager().findFragmentByTag("f1");
+        TardyFragment tardyFragment = (TardyFragment) getSupportFragmentManager().findFragmentByTag("f2");
+        if(absentFragment != null) {
+            absentFragment.moveAllToPresent();
+        }
+        if(tardyFragment != null) {
+            tardyFragment.moveAllToPresent();
+        }
 
     }
 

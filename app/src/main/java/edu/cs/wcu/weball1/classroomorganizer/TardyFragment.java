@@ -172,4 +172,16 @@ public class TardyFragment extends Fragment {
         adapter.removeAt(position);
         adapter.notifyDataSetChanged();
     }
+
+    public void moveAllToPresent() {
+        int indexZero = 0;
+        for (Student student : studentList) {
+            if(student != null) {
+                course.mark(student, "present");
+                adapter.removeAt(indexZero);
+                adapter.notifyDataSetChanged();
+            }
+        }
+        model.moveAllToPresent("tardy");
+    }
 }

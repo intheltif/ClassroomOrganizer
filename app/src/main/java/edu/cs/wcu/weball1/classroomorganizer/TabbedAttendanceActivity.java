@@ -1,5 +1,6 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -50,6 +52,9 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
     private static final int PRESENT_TAB_INDEX = 0;
     private static final int ABSENT_TAB_INDEX = 1;
     private static final int TARDY_TAB_INDEX = 2;
+
+    /** Request code for loading a CSV */
+    private static final int LOAD_REQ_CODE = 123;
 
     /** The data model that allows us to pass data between the different tabs */
     SharedViewModel model;
@@ -243,7 +248,7 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
                 onSaveButtonClicked();
                 break;
             case R.id.load_csv_button:
-                //onLoadCSVButtonClicked();
+                onLoadCSVButtonClicked();
                 break;
             case R.id.mark_all_btn:
                 onMarkAllPresentButtonClicked();
@@ -320,5 +325,35 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
         }
 
     } // end onMarkAllPresentButtonClicked method
+
+    private void onLoadCSVButtonClicked() {
+        Intent loadCSVIntent = new Intent(this, LoadActivity.class);
+        startActivityForResult(loadCSVIntent, LOAD_REQ_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == LOAD_REQ_CODE) {
+            Bundle extras = data.getExtras();
+            String path = "";
+            if(extras != null) {
+                path = extras.getString("loadedFile");
+                course = new Course();
+                File file = new File(path);
+                //Toast.makeText(this, "Loading from: " + file, Toast.LENGTH_SHORT).show();
+                try {
+                    InputStream existsStream = new FileInputStream(file);
+                    course.addStudents(model.readFromCSV(existsStream));
+                    updateSharedPersistentDataForCourse(course);
+                    Toast.makeText(this, "Loaded from: " + file, Toast.LENGTH_SHORT).show();
+                } catch (FileNotFoundException fnfe) {
+                    Log.e("TABBED_ACT_RESULT", "Could not find the specified file...");
+                    fnfe.printStackTrace();
+                }
+            }
+        }
+    }
 
 } // end TabbedAttendanceActivity class

@@ -36,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@mipmap/ic_add_student_fab_round" />
 
     <!-- The navigation drawer component -->
 <!--    <androidx.drawerlayout.widget.DrawerLayout-->

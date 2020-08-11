@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * A Model class that allows us to pass data between UI objects. A quick and dirty way to implement
- * MVVM architecture. This class essentially acts as a "delivery man" of objects.
+ * MVC architecture. This class essentially acts as a "delivery man" of objects.
  *
  * @author Evert Ball
  * @version 22 June 2020

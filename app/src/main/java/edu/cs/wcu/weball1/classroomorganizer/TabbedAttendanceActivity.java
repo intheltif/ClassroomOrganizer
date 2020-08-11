@@ -1,6 +1,5 @@
 package edu.cs.wcu.weball1.classroomorganizer;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -326,11 +325,38 @@ public class TabbedAttendanceActivity extends AppCompatActivity {
 
     } // end onMarkAllPresentButtonClicked method
 
+    /**
+     * The action that happens once the Load CSV button is clicked from the options menu.
+     *
+     * It starts the LoadActivity activity which returns a file to be loaded in. Handled by
+     * the onActivityResult() method.
+     */
     private void onLoadCSVButtonClicked() {
         Intent loadCSVIntent = new Intent(this, LoadActivity.class);
         startActivityForResult(loadCSVIntent, LOAD_REQ_CODE);
     }
 
+    /**
+     * Called when an activity you launched exits, giving you the requestCode you started it with,
+     * the resultCode it returned, and any additional data from it. The resultCode will be
+     * RESULT_CANCELED if the activity explicitly returned that, didn't return any result, or
+     * crashed during its operation.
+     *
+     * An activity can never receive a result in the resumed state. You can count on onResume()
+     * being called after this method, though not necessarily immediately after.
+     * If the activity was resumed, it will be paused and the result will be delivered, followed by
+     * onResume(). If the activity wasn't in the resumed state, then the result will be delivered,
+     * with onResume() called sometime later when the activity becomes active again.
+     *
+     * This method is never invoked if your activity sets noHistory to true.
+     *
+     * @param requestCode The integer request code originally supplied to startActivityForResult(),
+     *                    allowing you to identify who this result came from.
+     * @param resultCode The integer result code returned by the child activity through its
+     *                   setResult().
+     * @param data An Intent, which can return result data to the caller (various data can be
+     *             attached to Intent "extras").
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

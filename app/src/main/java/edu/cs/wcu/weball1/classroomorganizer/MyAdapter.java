@@ -11,6 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+/**
+ * Adapter used for the recyclerview that displays all of the loadable CSV files.
+ *
+ * @author Evert Ball
+ * @version 11 August 2020
+ */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>
         implements RecyclerView.OnClickListener {
     /** The list of file names */
@@ -29,15 +35,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>
     } // end constructor
 
     /**
-     * Determines the number of paintings that are in storage
-     * @return the number of paintings that are in storage
+     * Determines the number of files that are in storage
+     * @return the number of files that are in storage
      */
     public int getItemCount() {
         return this.data.size();
     } // end getItemCount
 
     /**
-     * Behavior to be performed when the holder is bound tot he activity
+     * Behavior to be performed when the holder is bound to the activity
      * @param holder the view holder for this file name
      * @param position where this file is in the list of files
      */

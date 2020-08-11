@@ -11,8 +11,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Creates a recyclerview that shows all of the saved files that may be loaded for attendance.
+ *
+ * @author Evert Ball
+ * @version 11 August 2020
+ */
 public class LoadActivity extends AppCompatActivity implements MyAdapter.ItemWasClicked {
 
+    /**
+     * Called when the activity is starting. This is where most initialization goes.
+     *
+     * @param savedInstanceState If the activity is being reinitialized after previously being shut
+     *                           down then this Bundle contains the data it most recently supplied
+     *                           in onSaveInstanceState(Bundle), otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +53,12 @@ public class LoadActivity extends AppCompatActivity implements MyAdapter.ItemWas
         recyclerView.setAdapter(myAdapter);
     }
 
+    /**
+     * Called when one of the list items in our recyclerview is clicked. It gets the name of the
+     * file and returns it to the calling activity through an Intent.
+     *
+     * @param text The filename text that the recyclerview holds.
+     */
     @Override
     public void itemClicked(String text) {
         Intent attendance = new Intent(this, TabbedAttendanceActivity.class);
